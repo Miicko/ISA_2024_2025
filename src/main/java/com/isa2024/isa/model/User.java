@@ -2,98 +2,159 @@ package com.isa2024.isa.model;
 
 import com.isa2024.isa.model.enums.UserRole;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-    @Entity
-    @Table(name = "users")
-    public class User {
+import java.util.Collection;
+import java.util.List;
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.SEQUENCE)
-        private long id;
+@Entity
+@Table(name = "users")
+public class User implements UserDetails {
 
-        @Column(name = "username")
-        private String username;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
 
-        @Column(name = "first_name")
-        private String firstName;
+    @Column(name = "myusername")
+    private String myusername;
 
-        @Column(name = "last_name")
-        private String lastName;
+    @Column(name = "first_name")
+    private String firstName;
 
-        @Column(name = "email")
-        private String email;
+    @Column(name = "last_name")
+    private String lastName;
 
-        @Column(name = "password")
-        private String password;
+    @Column(name = "email")
+    private String email;
 
-        @Enumerated(EnumType.STRING)
-        @Column(name = "role")
-        private UserRole role;
+    @Column(name = "password")
+    private String password;
 
-        public User(){}
-        public User(String email, String firstName, long id, String lastName, String password, UserRole role, String username) {
-            this.email = email;
-            this.firstName = firstName;
-            this.id = id;
-            this.lastName = lastName;
-            this.password = password;
-            this.role = role;
-            this.username = username;
-        }
+    @Column(name = "address")
+    private String address;
 
-        public String getEmail() {
-            return email;
-        }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole role;
 
-        public void setEmail(String emailId) {
-            this.email = emailId;
-        }
+    private String login;
 
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public long getId() {
-            return id;
-        }
-
-        public void setId(long id) {
-            this.id = id;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public UserRole getRole() {
-            return role;
-        }
-
-        public void setRole(UserRole role) {
-            this.role = role;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
+    public User(){}
+    public User(String email, String firstName, String lastName, String password, UserRole role, String myusername, String address) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.role = role;
+        this.myusername = myusername;
+        this.login = email;
+        this.address = address;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String emailId) {
+        this.email = emailId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public String getMyusername() {
+        return myusername;
+    }
+
+    public void setMyusername(String myusername) {
+        this.myusername = myusername;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+}

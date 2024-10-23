@@ -13,24 +13,24 @@ import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/userspace")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/userspace/users")
+    @GetMapping("/users")
     public List<User> getAllUsers(){
         return userService.findAll();
     }
 
-    @GetMapping("/userspace/users/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
         return ResponseEntity.ok(user);
     }
-    @GetMapping("/userspace/users/email/{email}")
+    @GetMapping("/users/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         User user = userService.findByEmail(email);
         if (user == null){
@@ -39,12 +39,12 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/userspace/users/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails){
         User user = userService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
 
-        user.setUsername(userDetails.getUsername());
+        user.setMyusername(userDetails.getMyusername());
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
         user.setEmail(userDetails.getEmail());
@@ -54,7 +54,7 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping("/userspace/users/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable Long id){
         User user = userService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
