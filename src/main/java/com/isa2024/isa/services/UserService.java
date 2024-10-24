@@ -29,4 +29,19 @@ public class UserService {
         userRepository.delete(user);
     }
     public boolean existById(Long id) { return userRepository.existsById(id); }
+
+    public boolean verify(String verificationCode) {
+        User user = userRepository.findByVerificationCode(verificationCode);
+
+        if (user == null || user.isEnabled()) {
+            return false;
+        } else {
+            user.setVerificationCode(null);
+            user.setEnabled(true);
+            userRepository.save(user);
+
+            return true;
+        }
+
+    }
 }

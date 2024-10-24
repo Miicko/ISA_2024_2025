@@ -6,15 +6,17 @@ import com.isa2024.isa.model.dtos.JwtDto;
 import com.isa2024.isa.model.dtos.SignInDto;
 import com.isa2024.isa.model.dtos.SignUpDto;
 import com.isa2024.isa.services.AuthService;
+import com.isa2024.isa.services.UserService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -25,10 +27,12 @@ public class AuthController {
     private AuthService service;
     @Autowired
     private TokenProvider tokenService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignUpDto data) {
-        service.signUp(data);
+    public ResponseEntity<?> signUp(@RequestBody SignUpDto data) throws UnsupportedEncodingException, MessagingException {
+        service.signUp(data, "nekirandomsajt");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -38,5 +42,14 @@ public class AuthController {
         var authUser = authenticationManager.authenticate(usernamePassword);
         var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
         return ResponseEntity.ok(new JwtDto(accessToken));
+    }
+
+    @GetMapping("/verify")
+    public String verifyUser(@Param("code") String code) {
+        if (userService.verify(code)) {
+            return "verify_success";
+        } else {
+            return "verify_fail";
+        }
     }
 }

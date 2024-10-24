@@ -41,6 +41,12 @@ public class User implements UserDetails {
 
     private String login;
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    @Column(name = "enabled")
+    private boolean enabled;
+
     public User(){}
     public User(String email, String firstName, String lastName, String password, UserRole role, String myusername, String address) {
         this.email = email;
@@ -51,6 +57,7 @@ public class User implements UserDetails {
         this.myusername = myusername;
         this.login = email;
         this.address = address;
+        this.enabled = false;
     }
 
     @Override
@@ -83,7 +90,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     public String getEmail() {
@@ -156,5 +163,17 @@ public class User implements UserDetails {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 }
