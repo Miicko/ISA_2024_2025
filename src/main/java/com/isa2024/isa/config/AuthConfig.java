@@ -42,7 +42,7 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/userspace/**").permitAll()
                         //.requestMatchers(HttpMethod.POST, "/api/v1/books").hasRole("USER")
                         //.anyRequest().authenticated())
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .cors(c -> c.configurationSource(customCorsConfiguration))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
