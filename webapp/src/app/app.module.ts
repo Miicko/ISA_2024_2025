@@ -10,6 +10,7 @@ import { AuthGuardService } from './service/auth-guard.service';
 import { JwtInterceptorService } from './service/jwt-interceptor.service';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserLogoutComponent } from './user-logout/user-logout.component';
+import { UserFormComponent } from './user-form/user-form.component';
 import { UserService } from './service/user-service.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -19,13 +20,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     NavMenuComponent,
     UserLoginComponent,
     UserLogoutComponent,
+    UserFormComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [UserService, provideAnimationsAsync('noop'),
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }

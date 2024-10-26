@@ -73,7 +73,7 @@ export class AuthService {
         this.user.email = retuser.email;
         this.user.firstName = retuser.email;
         this.user.lastName = retuser.lastName;
-        this.user.myusername = retuser.myusername;
+        this.user.username = retuser.username;
         this.user.id = retuser.id;
       });
       return of(this.user).pipe(delay(500));
