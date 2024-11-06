@@ -8,6 +8,7 @@ import com.isa2024.isa.model.dtos.SignUpDto;
 import com.isa2024.isa.services.AuthService;
 import com.isa2024.isa.services.UserService;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -31,9 +32,14 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignUpDto data) throws UnsupportedEncodingException, MessagingException {
-        service.signUp(data, "nekirandomsajt");
+    public ResponseEntity<?> signUp(@RequestBody SignUpDto data, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException {
+        service.signUp(data, getSiteURL(request));
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    private String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
     }
 
     @PostMapping("/login")

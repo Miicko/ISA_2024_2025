@@ -67,7 +67,7 @@ public class AuthService implements UserDetailsService {
             helper.setSubject(subject);
 
             content = content.replace("[[name]]", user.getUsername());
-            String verifyURL = siteURL + "/verify?code=" + user.getVerificationCode();
+            String verifyURL = siteURL + "/api/v1/auth/verify?code=" + user.getVerificationCode();
 
             content = content.replace("[[URL]]", verifyURL);
 
